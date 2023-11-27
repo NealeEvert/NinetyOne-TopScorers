@@ -1,7 +1,12 @@
+using TopScorers.entities;
+
 namespace TopScorers.interfaces
 {
     public interface IDataProcessor
     {
-        void ProcessData(string data);
+        IEnumerable<StudentMarks> ProcessData(IEnumerable<string> data);
+
+        IEnumerable<StudentMarks> ProcessData(string filepath, string filename);
     }
 }
+    

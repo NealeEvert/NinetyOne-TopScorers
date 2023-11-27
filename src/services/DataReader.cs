@@ -6,13 +6,15 @@ namespace TopScorers.services
 {
     public class DataReader : IDataReader
     {
-        readonly ILogger _logger = Container.Services.GetService<ILogger>();
+        ILogger _logger;
         
-        public DataReader() { }
+        public DataReader() { 
+            _logger = _logger = Container.Services.GetService<ILogger>();
+        }
         
         public DataReader(ILogger logger)
         {
-            _logger = logger;
+            _logger = logger ?? Container.Services.GetService<ILogger>();
         }
 
         public IEnumerable<string> ReadFile(string filepath, string filename)
