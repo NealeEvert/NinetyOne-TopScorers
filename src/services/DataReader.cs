@@ -15,25 +15,38 @@ namespace TopScorers.services
             _logger = logger;
         }
 
-        public string ReadFile(string filepath, string filename)
+        public IEnumerable<string> ReadFile(string filepath, string filename)
         {
-            _logger.Log("Test logging");
-            return string.Empty;
+            _logger.Log("Reading file");
+
+            var fullpath = string.Format("{0}{1}", filepath, filename);
+            if (File.Exists(fullpath))
+            {
+                return File.ReadLines(fullpath);
+            }
+            else {
+                throw new FileNotFoundException(string.Format("File not found: {0}", fullpath));
+            }
         }
 
-        public string ReadFile(FileInfo file)
+        public IEnumerable<string> StreamFile(string filepath, string filename)
         {
-            throw new NotImplementedException();
-        }
+            _logger.Log("Streaming file");
 
-        public StreamReader StreamFile(string filepath, string filename)
-        {
-            throw new NotImplementedException();
-        }
-
-        public StreamReader StreamFile(FileInfo file)
-        {
-            throw new NotImplementedException();
+            var fullpath = string.Format("{0}{1}", filepath, filename);
+            if (File.Exists(fullpath))
+            {
+                StreamReader reader = new("file.txt");
+                string? line;
+                while ((line = reader.ReadLine())
+                    != null) {
+                    yield return line;
+                }
+                reader.Close();
+            }
+            else {
+                throw new FileNotFoundException(string.Format("File not found: {0}", fullpath));
+            }
         }
     }
 }
